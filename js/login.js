@@ -1,5 +1,5 @@
 // 选择元素
-const form = document.querySelector('.login-form');
+const form = document.getElementById('loginForm');
 const usernameInput = document.getElementById('username');
 const passwordInput = document.getElementById('password');
 
@@ -16,8 +16,6 @@ passwordInput.insertAdjacentElement('afterend', passwordError);
 usernameInput.addEventListener('input', () => {
     if (usernameInput.value.trim() === '') {
         usernameError.textContent = '用户名不能为空';
-    } else if (usernameInput.value.length < 3) {
-        usernameError.textContent = '用户名至少需要 3 个字符';
     } else {
         usernameError.textContent = '';
     }
@@ -38,23 +36,24 @@ passwordInput.addEventListener('input', () => {
 form.addEventListener('submit', (event) => {
     event.preventDefault(); // 阻止页面刷新
 
-    let valid = true;
 
     // 再次验证用户名
     if (usernameInput.value.trim() === '') {
         usernameError.textContent = '用户名不能为空';
-        valid = false;
+        return;
     }
 
     // 再次验证密码
     if (passwordInput.value.trim() === '') {
         passwordError.textContent = '密码不能为空';
-        valid = false;
+        return;
+    }
+    if(passwordInput.value.length < 6){
+        passwordError.textContent = '密码至少需要 6 个字符';
+        return;
     }
 
-    // 如果通过验证
-    if (valid && usernameError.textContent === '' && passwordError.textContent === '') {
-        const formData = {
+    const formData = {
             username: usernameInput.value.trim(),
             password: passwordInput.value.trim(),
             remember: document.getElementById('remember').checked
@@ -78,5 +77,6 @@ form.addEventListener('submit', (event) => {
         resultDiv.style.marginTop = '20px';
 
         form.insertAdjacentElement('afterend', resultDiv);
-    }
-});
+
+   
+})
